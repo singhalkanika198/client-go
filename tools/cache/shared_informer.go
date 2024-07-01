@@ -665,6 +665,16 @@ func (s *sharedIndexInformer) OnUpdate(old, new interface{}) {
 		if oldAccessor, err := meta.Accessor(old); err == nil {
 			// Events that didn't change resourceVersion are treated as resync events
 			// and only propagated to listeners that requested resync
+			if accessor != nil {
+				klog.Infof("accessor KV = %v", accessor.GetResourceVersion())
+			} else {
+				klog.Infof("accessor is nil")
+			}
+			if oldAccessor != nil {
+				klog.Infof("oldAccessor KV = %v", oldAccessor.GetResourceVersion())
+			} else {
+				klog.Infof("oldAccessor is nil")
+			}
 			isSync = accessor.GetResourceVersion() == oldAccessor.GetResourceVersion()
 		}
 	}
