@@ -18,9 +18,9 @@ package cache
 
 import (
 	"fmt"
-	"sync"
-
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
+	"sync"
 )
 
 // ThreadSafeStore is an interface that allows concurrent indexed
@@ -173,6 +173,8 @@ func (i *storeIndex) updateSingleIndex(name string, oldObj interface{}, newObj i
 		i.indices[name] = index
 	}
 
+	klog.Infof("indexValues = %v", indexValues)
+	klog.Infof("oldIndexValues = %v", oldIndexValues)
 	if len(indexValues) == 1 && len(oldIndexValues) == 1 && indexValues[0] == oldIndexValues[0] {
 		// We optimize for the most common case where indexFunc returns a single value which has not been changed
 		return
